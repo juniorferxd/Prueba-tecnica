@@ -1,72 +1,113 @@
+# 🧪 Prueba Técnica – Junior Santamaría
 
+API RESTful desarrollada en Laravel para la gestión de Proyectos y Tareas. Incluye filtros dinámicos, validaciones estrictas, auditoría con `owen-it/laravel-auditing`, documentación Swagger (`L5-Swagger`) y monitoreo con Laravel Telescope.
 
-🧪 INSTALACIÓN DEL PROYECTO LARAVEL – PRUEBA TÉCNICA
+---
 
-Este documento describe cómo instalar y ejecutar el proyecto Laravel utilizando solo Visual Studio Code, PHP, Composer y MySQL.
+## ✅ Requisitos del sistema
 
-📋 REQUISITOS PREVIOS
-
-- PHP >= 8.2 (verifica con: php -v)
-- Composer (verifica con: composer -V)
-- MySQL (ejecutando localmente)
-- Visual Studio Code
+- PHP >= 8.2
+- Composer
+- MySQL >= 5.7
+- Laravel 11 o 12
 - Node.js (opcional, solo si usas Vite)
 
-🚀 PASOS DE INSTALACIÓN
+---
 
-1. Clonar el repositorio:
+## 🚀 Instalación paso a paso
 
-    git clone https://github.com/juniorferxd/Prueba-tecnica.git](https://github.com/juniorferxd/laravel-mid-level-project-task-api-Junior
-    cd Prueba-tecnica
+```bash
+git clone https://github.com/juniorferxd/laravel-mid-level-project-task-api-Junior.git
+cd laravel-mid-level-project-task-api-Junior
+composer install
+cp .env.example .env
+```
 
-2. Abrir Visual Studio Code:
+Edita `.env`:
 
-    code .
+```env
+DB_DATABASE=midlevel_api
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-3. Instalar dependencias del proyecto:
+```bash
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-    composer install
+Accede a la app desde:
 
-4. Crear archivo .env desde el ejemplo:
+```
+http://localhost:8000
+```
 
-    cp .env.example .env
+---
 
-5. Configurar la base de datos en .env
+## 📚 Cómo levantar Swagger
 
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=midlevel_api
-    DB_USERNAME=root
-    DB_PASSWORD=
+```bash
+php artisan l5-swagger:generate
+```
 
-⚠️ Asegúrate de tener la base de datos `prueba_tecnica` creada en tu gestor (phpMyAdmin o CLI de MySQL).
+Accede a la documentación:
 
-6. Generar la clave de la aplicación:
+```
+http://localhost:8000/api/documentation
+```
 
-    php artisan key:generate
+---
 
-7. Ejecutar las migraciones:
+## 🔍 Cómo ver Telescope
 
-    php artisan migrate
+Telescope ya está instalado. Accede desde:
 
-8. Levantar el servidor local:
+```
+http://localhost:8000/telescope
+```
 
-    php artisan serve
+Te permitirá monitorear:
 
-Accede desde el navegador en:
-    http://localhost:8000
+- Consultas SQL
+- Excepciones
+- Logs
+- Eventos
+- Auditorías de modelos
 
-🧪 SWAGGER (Documentación de la API)
+---
 
-1. Generar la documentación:
+## 🎯 Cómo probar filtros dinámicos
 
-    php artisan l5-swagger:generate
+### /api/projects
 
-2. Abrir en navegador:
+```
+GET /api/projects?status=active&name=Plan&from=2025-01-01&to=2025-12-31
+```
 
-    http://localhost:8000/api/documentation
+### /api/tasks
 
-🔍 TELESCOPE (Monitoreo de la aplicación)
+```
+GET /api/tasks?status=done&priority=high&due_date=2025-05-10&project_id=UUID
+```
 
-    http://localhost:8000/telescope
+Puedes probarlo con Postman o directamente en Swagger.
+
+---
+
+## 📘 Cómo ver logs de auditoría
+
+Las acciones de **crear, actualizar y eliminar** en Proyectos y Tareas son auditadas automáticamente con:
+
+```
+owen-it/laravel-auditing
+```
+
+Consulta los registros en la tabla `audits`.
+
+También puedes ver auditorías en Telescope bajo la sección `Models`.
+
+
+## 📬 Repositorio
+
+[🔗 https://github.com/juniorferxd/laravel-mid-level-project-task-api-Junior](https://github.com/juniorferxd/laravel-mid-level-project-task-api-Junior)
