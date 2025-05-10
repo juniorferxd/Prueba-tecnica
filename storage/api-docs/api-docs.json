@@ -1,0 +1,458 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Gestión de Proyectos",
+        "description": "Documentación de la API para proyectos y tareas",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Servidor principal"
+        }
+    ],
+    "paths": {
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Listar todos los proyectos",
+                "operationId": "fbc21feeb3df8a2cb519efb6480ae7d9",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filtrar por estado (active, inactive)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar por nombre del proyecto",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Fecha desde (YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Fecha hasta (YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listado de proyectos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Crear un nuevo proyecto",
+                "operationId": "a9d5bd5914cf75eaebafcf8b9e320dcf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Proyecto A"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descripción del proyecto"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Proyecto creado exitosamente"
+                    }
+                }
+            }
+        },
+        "/api/projects/{id}": {
+            "get": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Obtener detalle de un proyecto",
+                "operationId": "865085b82af27d647cf1f2a772aa7927",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del proyecto (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalle del proyecto"
+                    },
+                    "404": {
+                        "description": "Proyecto no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Actualizar un proyecto existente",
+                "operationId": "fe600b7ffce78456bce67c51b9eca51d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Proyecto A Modificado"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Nueva descripción"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "inactive"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Proyecto actualizado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Eliminar un proyecto",
+                "operationId": "d81ac2b0b51fa7143c69f1a5f4c27eb0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Proyecto eliminado"
+                    },
+                    "404": {
+                        "description": "Proyecto no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Listar todas las tareas con filtros",
+                "operationId": "be68905d866e856db6c738172b8d929a",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filtrar por estado (pending, in_progress, done)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "priority",
+                        "in": "query",
+                        "description": "Filtrar por prioridad (low, medium, high)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "due_date",
+                        "in": "query",
+                        "description": "Filtrar por fecha de vencimiento",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "query",
+                        "description": "Filtrar por ID del proyecto",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listado de tareas"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Crear una nueva tarea",
+                "operationId": "ebbaabc58e3db61374a57c53544959b2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "project_id",
+                                    "title",
+                                    "status",
+                                    "priority",
+                                    "due_date"
+                                ],
+                                "properties": {
+                                    "project_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "a5b3d2e1-4567-4c9a-b8ff-abc123def456"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Diseñar la base de datos"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Crear esquema relacional"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "pending"
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "example": "medium"
+                                    },
+                                    "due_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-20"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tarea creada correctamente"
+                    }
+                }
+            }
+        },
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Obtener detalle de una tarea",
+                "operationId": "32c40e2d1129b80c1dcabd538df63a33",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tarea (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalle de la tarea"
+                    },
+                    "404": {
+                        "description": "Tarea no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Actualizar una tarea existente",
+                "operationId": "c36c959b634c99e1e02ad2f3f2c36a2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tarea (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "project_id",
+                                    "title",
+                                    "status",
+                                    "priority",
+                                    "due_date"
+                                ],
+                                "properties": {
+                                    "project_id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "priority": {
+                                        "type": "string"
+                                    },
+                                    "due_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tarea actualizada correctamente"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Eliminar una tarea",
+                "operationId": "d81cc7975ea62176b4ef8f74ed95168d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la tarea (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Tarea eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Tarea no encontrada"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tareas",
+            "description": "Operaciones relacionadas con las tareas de proyectos"
+        },
+        {
+            "name": "Proyectos",
+            "description": "Proyectos"
+        }
+    ]
+}
