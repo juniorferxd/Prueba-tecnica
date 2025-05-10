@@ -16,7 +16,7 @@ Este documento describe cómo instalar y ejecutar el proyecto Laravel utilizando
 
 1. Clonar el repositorio:
 
-    git clone https://github.com/juniorferxd/Prueba-tecnica.git
+    git clone https://github.com/juniorferxd/Prueba-tecnica.git](https://github.com/juniorferxd/laravel-mid-level-project-task-api-Junior
     cd Prueba-tecnica
 
 2. Abrir Visual Studio Code:
